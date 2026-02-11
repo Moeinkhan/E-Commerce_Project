@@ -20,7 +20,7 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=254)
     last_name = models.CharField(max_length=254)
     email = models.EmailField(max_length=254, unique=True)
-    phone = models.CharField(max_length=11)
+    phone = models.CharField(max_length=12)
     birth_date = models.DateField(null=True)
 
 class Order(models.Model):
@@ -42,7 +42,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
 
-class Addresses(models.Model):
+class Address(models.Model):
     city = models.CharField(max_length=254)
     street = models.CharField(max_length=254)
     zip = models.CharField(max_length=20)
