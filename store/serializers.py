@@ -5,7 +5,7 @@ from .models import *
 class Product_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'title', 'description', 'price', 'price_with_tax']
+        fields = ['id', 'title', 'description', 'price', 'inventory', 'collection', 'price_with_tax']
 
     price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
 
