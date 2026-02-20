@@ -11,15 +11,15 @@ class CollectionList(ListCreateAPIView):
     serializer_class = Collection_Serializer
 
 class CollectionDetail(RetrieveUpdateDestroyAPIView):
-        queryset = Collection.objects.all()
-        serializer_class = Collection_Serializer
-    
-        def delete(self, request, pk):
-            collection = get_object_or_404(Collection, pk=pk)
-            if collection.product_set.count() > 0:
-                return Response({'error': 'Collection cannot be deleted because it includes one or more products.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-            collection.delete()
-            return Response()
+    queryset = Collection.objects.all()
+    serializer_class = Collection_Serializer
+
+    def delete(self, request, pk):
+        collection = get_object_or_404(Collection, pk=pk)
+        if collection.product_set.count() > 0:
+            return Response({'error': 'Collection cannot be deleted because it includes one or more products.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        collection.delete()
+        return Response()
 
 
 # Product Endpoints
