@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
 from .models import *
 from .serializers import *
+from .filters import ProductFilter
 
 # Collection Endpoints
 class CollectionList(ListCreateAPIView):
@@ -26,6 +28,8 @@ class CollectionDetail(RetrieveUpdateDestroyAPIView):
 class ProductList(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = Product_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductFilter
 
 class ProductDetail(RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
@@ -47,6 +51,6 @@ class ReviewList(ListCreateAPIView):
 
 class ReviewDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = Review_Serializer
-    
+
     def get_queryset(self):
         return Review.objects.filter(product_id=self.kwargs['product_pk'])
