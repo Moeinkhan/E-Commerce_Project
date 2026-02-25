@@ -37,3 +37,16 @@ class ProductDetail(RetrieveUpdateDestroyAPIView):
             return Response({'error': 'Product cannot be deleted because it is associated with an order item.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         product.delete()
         return Response()
+    
+# Review Endpoints
+class ReviewList(ListCreateAPIView):
+    serializer_class = Review_Serializer
+
+    def get_queryset(self):
+        return Review.objects.filter(product_id=self.kwargs['product_pk'])
+
+class ReviewDetail(RetrieveUpdateDestroyAPIView):
+    serializer_class = Review_Serializer
+    
+    def get_queryset(self):
+        return Review.objects.filter(product_id=self.kwargs['product_pk'])
