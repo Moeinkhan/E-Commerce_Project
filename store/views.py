@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, RetrieveDestroyAPIView
 from rest_framework import status
 from .models import *
 from .serializers import *
@@ -57,3 +57,33 @@ class ReviewDetail(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Review.objects.filter(product_id=self.kwargs['product_pk'])
+    
+# Cart Endpoints
+class CartList(CreateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = Cart_Serializer
+
+class CartDetail(RetrieveDestroyAPIView):
+    queryset = Cart.objects.prefetch_related('cartitem_set__product').all()
+    serializer_class = Cart_Serializer
+
+class CartItemList(ListCreateAPIView):
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return AddCartItem_Serializer
+        return CartItem_Serializer
+    
+    def get_serializer_context(self):
+        return {'cart_id': self.kwargs['cart_pk']}
+
+    def get_queryset(self):
+        return CartItem.objects.filter(cart_id=self.kwargs['cart_pk']).select_related('product')
+    
+class CartItemDetail(RetrieveUpdateDestroyAPIView):
+    def get_serializer_class(self):
+        if self.request.method == 'PUT':
+            return UpdateCartItem_Serializer
+        return CartItem_Serializer
+    
+    def get_queryset(self):
+        return CartItem.objects.filter(cart_id=self.kwargs['cart_pk']).select_related('product')
