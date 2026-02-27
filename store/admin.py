@@ -17,7 +17,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'email', 'phone']
+    list_display = ['user__first_name', 'user__last_name', 'user__email', 'phone']
     search_fields = ['first_name', 'last_name', 'email']
 
 

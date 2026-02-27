@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from uuid import uuid4
 
@@ -18,11 +19,9 @@ class Product(models.Model):
     promotions = models.ManyToManyField(Promotion)
 
 class Customer(models.Model):
-    first_name = models.CharField(max_length=254)
-    last_name = models.CharField(max_length=254)
-    email = models.EmailField(max_length=254, unique=True)
     phone = models.CharField(max_length=12)
     birth_date = models.DateField(null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
